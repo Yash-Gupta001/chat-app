@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "975667499823",
+    "project_id": "furniwas-914d6",
+    "storage_bucket": "furniwas-914d6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:975667499823:android:a156a173be1880e90a87da",
+        "android_client_info": {
+          "package_name": "com.example.chat_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeufCIHwdTZnrfK0C_Ux0LPSgVwCvDCPI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
