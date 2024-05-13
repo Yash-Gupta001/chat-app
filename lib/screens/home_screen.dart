@@ -2,8 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key); // Corrected the constructor
-
+  const HomeScreen({Key? key}) : super(key: key);
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -12,7 +11,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar( // Corrected the placement of AppBar
+      appBar: AppBar(
         leading: Icon(CupertinoIcons.home),
         title: Text('Chat App'),
         actions: [
@@ -31,8 +30,11 @@ class _HomeScreenState extends State<HomeScreen> {
       // floating button to add new user
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 10),
-        child: FloatingActionButton(onPressed: (){},
-        child : Icon(Icons.message_outlined)
+        child: FloatingActionButton(
+          onPressed: () {},
+          backgroundColor: Colors.black, // Set background color to black
+          foregroundColor: Colors.white, // Set icon color to white
+          child: Icon(Icons.message_outlined),
         ),
       ),
       body: Container(), 
