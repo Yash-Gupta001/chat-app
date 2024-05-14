@@ -85,4 +85,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'furniwas-914d6.appspot.com',
     measurementId: 'G-83X35JLJWK',
   );
+
 }
