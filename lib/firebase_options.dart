@@ -25,9 +25,15 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
-        return windows;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for windows - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -41,49 +47,29 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAUx7Km-0ZWw1k3sPaP8LsXVCB-Y09d148',
-    appId: '1:975667499823:web:236905bb2db2e9be0a87da',
-    messagingSenderId: '975667499823',
-    projectId: 'furniwas-914d6',
-    authDomain: 'furniwas-914d6.firebaseapp.com',
-    storageBucket: 'furniwas-914d6.appspot.com',
-    measurementId: 'G-HVRLKBN962',
+    apiKey: 'AIzaSyD518cl5X3-H7n-qyb2yfFTlB3ytigTsew',
+    appId: '1:466431904054:web:d877b44f16939484448b97',
+    messagingSenderId: '466431904054',
+    projectId: 'chatpulse-c4de3',
+    authDomain: 'chatpulse-c4de3.firebaseapp.com',
+    storageBucket: 'chatpulse-c4de3.appspot.com',
+    measurementId: 'G-H2XCQVSJX9',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBeufCIHwdTZnrfK0C_Ux0LPSgVwCvDCPI',
-    appId: '1:975667499823:android:a156a173be1880e90a87da',
-    messagingSenderId: '975667499823',
-    projectId: 'furniwas-914d6',
-    storageBucket: 'furniwas-914d6.appspot.com',
+    apiKey: 'AIzaSyClyr_FDs6u4CrsS95ZGoM0Eiy2lPUmVkM',
+    appId: '1:466431904054:android:8ae299acb3a1e76e448b97',
+    messagingSenderId: '466431904054',
+    projectId: 'chatpulse-c4de3',
+    storageBucket: 'chatpulse-c4de3.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDiTG2TU-sEE2ZokjE7en5hwEFmg3cLX-Y',
-    appId: '1:975667499823:ios:7eb353021e6a852b0a87da',
-    messagingSenderId: '975667499823',
-    projectId: 'furniwas-914d6',
-    storageBucket: 'furniwas-914d6.appspot.com',
+    apiKey: 'AIzaSyDx-WWRoVqe0vISeOF_ezh_BD-DJ79jk2c',
+    appId: '1:466431904054:ios:ec5cd8d86421b6ad448b97',
+    messagingSenderId: '466431904054',
+    projectId: 'chatpulse-c4de3',
+    storageBucket: 'chatpulse-c4de3.appspot.com',
     iosBundleId: 'com.example.chatApp',
   );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDiTG2TU-sEE2ZokjE7en5hwEFmg3cLX-Y',
-    appId: '1:975667499823:ios:7eb353021e6a852b0a87da',
-    messagingSenderId: '975667499823',
-    projectId: 'furniwas-914d6',
-    storageBucket: 'furniwas-914d6.appspot.com',
-    iosBundleId: 'com.example.chatApp',
-  );
-
-  static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyAUx7Km-0ZWw1k3sPaP8LsXVCB-Y09d148',
-    appId: '1:975667499823:web:54ab7a620536cf9b0a87da',
-    messagingSenderId: '975667499823',
-    projectId: 'furniwas-914d6',
-    authDomain: 'furniwas-914d6.firebaseapp.com',
-    storageBucket: 'furniwas-914d6.appspot.com',
-    measurementId: 'G-83X35JLJWK',
-  );
-
 }

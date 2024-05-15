@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:chat_app/screens/home_screen.dart';
 import 'auth/login_screen.dart'; 
@@ -16,10 +18,14 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void _navigateToHome() {
     Future.delayed(Duration(seconds: 2), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => LoginScreen()),
-      );
+     if (FirebaseAuth.instance.currentUser != null) {        //navigate to home screen
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (_) =>  HomeScreen()));
+      } else {
+        //navigate to login screen
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (_) =>  LoginScreen()));
+      }
     });
   }
 

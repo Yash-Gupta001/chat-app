@@ -13,7 +13,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: Icon(CupertinoIcons.home),
-        title: Text('Chat App'),
+        title: Text('ChatPulse'),
         actions: [
           IconButton(
             // search button

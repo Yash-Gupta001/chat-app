@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "975667499823",
-    "project_id": "furniwas-914d6",
-    "storage_bucket": "furniwas-914d6.appspot.com"
+    "project_number": "466431904054",
+    "project_id": "chatpulse-c4de3",
+    "storage_bucket": "chatpulse-c4de3.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:975667499823:android:a156a173be1880e90a87da",
+        "mobilesdk_app_id": "1:466431904054:android:8ae299acb3a1e76e448b97",
         "android_client_info": {
           "package_name": "com.example.chat_app"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBeufCIHwdTZnrfK0C_Ux0LPSgVwCvDCPI"
+          "current_key": "AIzaSyClyr_FDs6u4CrsS95ZGoM0Eiy2lPUmVkM"
         }
       ],
       "services": {
