@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import '../../api/apis.dart';
 import '../../helper/dialogs.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -59,11 +60,11 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+    return await Apis.auth.signInWithCredential(credential);
     }
     catch(e){
       log('\n_signInWithGoogle:$e');
-      Dialogs.showSnackbar(context, 'Something Went Wrong (Check Internet!)');
+      Dialogs.showSnackbar(context, 'Please check your internet connection and try again');
       return null;
     }
   }

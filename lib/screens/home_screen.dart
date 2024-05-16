@@ -1,5 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../api/apis.dart';
+import '../widgets/chat_user.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -10,6 +15,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+    final mq = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         leading: Icon(CupertinoIcons.home),
@@ -37,7 +43,23 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Icon(Icons.message_outlined),
         ),
       ),
-      body: Container(), 
+      body: StreamBuilder(
+        stream: Apis.firestore.collection('users').snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final data = snapshot.data?.docs;
+            log('Data: $data');
+          }
+          return ListView.builder(
+            itemCount: 20,
+            padding: EdgeInsets.only(top: mq.height * 0.03),
+            physics: BouncingScrollPhysics(),
+            itemBuilder: (context, index) {
+              return ChatUser();
+            },
+          );
+        },
+      ),
     );
   }
 }

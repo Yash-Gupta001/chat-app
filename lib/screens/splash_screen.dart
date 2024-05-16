@@ -1,7 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:chat_app/screens/home_screen.dart';
+import '../api/apis.dart';
 import 'auth/login_screen.dart'; 
 
 class SplashScreen extends StatefulWidget {
@@ -18,11 +19,11 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void _navigateToHome() {
     Future.delayed(Duration(seconds: 2), () {
-     if (FirebaseAuth.instance.currentUser != null) {        //navigate to home screen
+     if (Apis.auth.currentUser != null) {   
+      log('\nuser: ${Apis.auth.currentUser}');     //navigate to home screen
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (_) =>  HomeScreen()));
-      } else {
-        //navigate to login screen
+      } else {        //navigate to login screen
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (_) =>  LoginScreen()));
       }
