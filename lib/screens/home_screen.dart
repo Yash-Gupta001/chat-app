@@ -1,5 +1,4 @@
-import 'dart:developer';
-
+import 'package:chat_app/models/chat_user_info.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +12,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  List<ChatUserInfo> list = [];
+
   @override
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context).size;
@@ -46,18 +48,41 @@ class _HomeScreenState extends State<HomeScreen> {
       body: StreamBuilder(
         stream: Apis.firestore.collection('users').snapshots(),
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final data = snapshot.data?.docs;
-            log('Data: $data');
+          switch (snapshot.connectionState) {
+            // if data is loading
+            case ConnectionState.waiting:
+            case ConnectionState.none:
+              return const Center(child: CircularProgressIndicator());
+
+            // if some or all data is loaded then show it
+            case ConnectionState.active:
+            case ConnectionState.done:
+              final data = snapshot.data?.docs;
+              list = data?.map((e) => ChatUserInfo.fromJson(e.data())).toList() ?? [];
+
+              if (list.isNotEmpty) {
+                return ListView.builder(
+                  itemCount: list.length,
+                  padding: EdgeInsets.only(top: mq.height * 0.03),
+                  physics: BouncingScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return ChatUser(user: list[index]);
+                  },
+                );
+              } else {
+                return const Center(
+                  child: Text(
+                    'No Connections Found! 💔',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.redAccent,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                );
+              }
           }
-          return ListView.builder(
-            itemCount: 20,
-            padding: EdgeInsets.only(top: mq.height * 0.03),
-            physics: BouncingScrollPhysics(),
-            itemBuilder: (context, index) {
-              return ChatUser();
-            },
-          );
         },
       ),
     );
