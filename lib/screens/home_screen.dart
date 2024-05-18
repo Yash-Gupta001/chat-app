@@ -1,4 +1,5 @@
 import 'package:chat_app/models/chat_user_info.dart';
+import 'package:chat_app/screens/profile_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -30,7 +31,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           IconButton(
             //more options button
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_) => ProfileScreen(userInfo: list[0])));
+            },
             icon: Icon(Icons.more_vert),
           ),
         ],
@@ -76,8 +79,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: Colors.redAccent,
-                      fontStyle: FontStyle.italic,
                     ),
                   ),
                 );
