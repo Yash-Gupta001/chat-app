@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:chat_app/screens/home_screen.dart';
+import 'package:flutter/services.dart';
 import '../api/apis.dart';
 import 'auth/login_screen.dart'; 
 
@@ -19,7 +20,16 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void _navigateToHome() {
     Future.delayed(Duration(seconds: 2), () {
-     if (Apis.auth.currentUser != null) {   
+
+      //exit full screen
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+      SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+          systemNavigationBarColor: Colors.white,
+          statusBarColor: Colors.white));
+
+
+
+      if (Apis.auth.currentUser != null) {   
       log('\nuser: ${Apis.auth.currentUser}');     //navigate to home screen
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (_) =>  HomeScreen()));
