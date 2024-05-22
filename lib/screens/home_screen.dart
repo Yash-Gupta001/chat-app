@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../api/apis.dart';
-import '../widgets/chat_user.dart';
+import '../widgets/chat_user_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -31,31 +31,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
-      child: PopScope(
-        // onWillPop: () {
-        //   if (_isSearching) {
-        //     setState(() {
-        //       _isSearching = !_isSearching;
-        //     });
-        //     return Future.value(false);
-        //   } else {
-        //     return Future.value(true);
-        //   }
-        // },
-
-        //if search is on & back button is pressed then close search
-        //or else simple close current screen on back button click
-        canPop: !_isSearching,
-        onPopInvoked: (_) async {
+      child: WillPopScope(
+        onWillPop: () async {
           if (_isSearching) {
             setState(() => _isSearching = !_isSearching);
+            return Future.value(false);
           } else {
-            Navigator.of(context).pop();
+            return Future.value(true);
           }
         },
         child: Scaffold(
           appBar: AppBar(
-            leading: Icon(CupertinoIcons.home),
+            leading: Icon(CupertinoIcons.home, color: Colors.white), // Set icon color to white
             title: _isSearching
                 ? TextField(
                     controller: _searchController,
@@ -89,9 +76,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     _isSearching = !_isSearching;
                   });
                 },
-                icon: Icon(_isSearching
-                    ? CupertinoIcons.clear_circled_solid
-                    : Icons.search),
+                icon: Icon(
+                  _isSearching ? CupertinoIcons.clear_circled_solid : Icons.search,
+                  color: Colors.white, // Set icon color to white
+                ),
               ),
               IconButton(
                 onPressed: () {
@@ -100,9 +88,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     MaterialPageRoute(builder: (_) => ProfileScreen(userInfo: Apis.me)),
                   );
                 },
-                icon: Icon(Icons.more_vert),
+                icon: Icon(Icons.more_vert, color: Colors.white), // Set icon color to white
               ),
             ],
+            backgroundColor: Colors.black, // Set AppBar background to black
           ),
           floatingActionButton: Padding(
             padding: const EdgeInsets.only(bottom: 10),
@@ -113,14 +102,15 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Icon(Icons.message_outlined),
             ),
           ),
+          backgroundColor: Colors.black, // Set Scaffold background to black
           body: StreamBuilder(
             stream: Apis.getAllUsers(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting ||
                   snapshot.connectionState == ConnectionState.none) {
-                return Center(child: CircularProgressIndicator());
+                return Center(child: CircularProgressIndicator(color: Colors.white)); // Change color to white
               } else if (snapshot.hasError) {
-                return Center(child: Text('Error: ${snapshot.error}'));
+                return Center(child: Text('Error: ${snapshot.error}', style: TextStyle(color: Colors.white))); // Change text color to white
               } else {
                 final data = snapshot.data?.docs;
                 _list = data?.map((e) => ChatUserInfo.fromJson(e.data())).toList() ?? [];
