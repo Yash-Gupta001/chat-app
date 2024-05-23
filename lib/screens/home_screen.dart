@@ -97,8 +97,8 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: const EdgeInsets.only(bottom: 10),
             child: FloatingActionButton(
               onPressed: () {},
-              backgroundColor: Colors.black,
-              foregroundColor: Colors.white,
+              backgroundColor: Colors.white,
+              foregroundColor: Colors.black,
               child: Icon(Icons.message_outlined),
             ),
           ),

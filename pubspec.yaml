@@ -32,6 +32,8 @@ dependencies:
   gallery_saver_updated: ^3.0.0
   emoji_picker_flutter: ^2.2.0
   http: ^1.2.1
+  flutter_windowmanager: ^0.2.0
+  overlay_support: ^2.1.0
 
 dev_dependencies:
   flutter_test:

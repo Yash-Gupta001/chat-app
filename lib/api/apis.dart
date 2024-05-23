@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:chat_app/models/chat_user_info.dart';
-import 'package:chat_app/widgets/chat_user_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -49,7 +48,7 @@ class Apis{
     final time = DateTime.now().millisecondsSinceEpoch.toString();
     final chatUser = ChatUserInfo(
     image: user.photoURL.toString(),
-    about: "Hey, I'm using ChatPulse!",
+    about: "Pulse of Communication! 💓💬",
     name: user.displayName.toString(),
     createdAt: '',
     isOnline: false,
@@ -107,6 +106,9 @@ class Apis{
 
 
 
+
+  ///************** Chat Screen Related APIs **************
+
   // chats (collection) --> conversation_id (doc) --> messages (collection) --> message (doc)
 
   // useful for getting conversation id
@@ -122,7 +124,7 @@ class Apis{
         .orderBy('sent', descending: true)
         .snapshots();
   }
-
+  
   // for sending message
   static Future<void> sendMessage(
       ChatUserInfo chatUser, String msg, Type type) async {
@@ -140,31 +142,48 @@ class Apis{
 
     final ref = firestore
         .collection('chats/${getConversationID(chatUser.id)}/messages/');
-    await ref.doc(time).set(message.toJson());
-    //.then((value) =>
-        //sendPushNotification(chatUser, type == Type.text ? msg : 'image'));
+    await ref.doc(time).set(message.toJson());  
+    }
+
+
+    //update read status of message
+    static Future<void> updateMessageReadStatus(Message message) async {
+      firestore
+        .collection('chats/${getConversationID(message.fromId)}/messages/')
+        .doc(message.sent)
+        .update({'read': DateTime.now().millisecondsSinceEpoch.toString()});
+    }
+
+
+    // to show last message send of specific  chat
+    static Stream<QuerySnapshot<Map<String, dynamic>>> getLastMessages(
+      ChatUserInfo user){
+        return firestore
+        .collection('chats/${getConversationID(user.id)}/messages/')
+        .orderBy('sent',descending: true)
+        .limit(1)
+        .snapshots();
+      }
+
+      //send chat image
+  static Future<void> sendChatImage(ChatUserInfo chatUser, File file) async {
+    //getting image file extension
+    final ext = file.path.split('.').last;
+
+    //storage file ref with path
+    final ref = storage.ref().child(
+        'images/${getConversationID(chatUser.id)}/${DateTime.now().millisecondsSinceEpoch}.$ext');
+
+    //uploading image
+    await ref
+        .putFile(file, SettableMetadata(contentType: 'image/$ext'))
+        .then((p0) {
+      log('Data Transferred: ${p0.bytesTransferred / 1000} kb');
+    });
+
+    //updating image in firestore database
+    final imageUrl = await ref.getDownloadURL();
+    await sendMessage(chatUser, imageUrl, Type.image);
   }
 
-    
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
-
