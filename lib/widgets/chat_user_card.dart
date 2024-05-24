@@ -56,7 +56,20 @@ class _ChatUserState extends State<ChatUser> {
           title: Text(widget.user.name),
 
           // Last message
-          subtitle: Text(_message != null ? _message!.msg : widget.user.about, maxLines: 1),
+          subtitle: _message != null ?
+  _message!.type == Type.image ?
+    Row(
+      children: [
+        Icon(Icons.image), // Image icon
+        SizedBox(width: 5), // Add some space between icon and text
+        Text('Image'), // Image text
+      ],
+    )
+    :
+    Text(_message!.msg, maxLines: 1) // Regular message text
+  :
+  Text(widget.user.about, maxLines: 1), // Default about text
+
 
           // Last message time
           trailing: _message == null ? 

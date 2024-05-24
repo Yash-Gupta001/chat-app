@@ -2,16 +2,18 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:chat_app/models/message_info.dart';
+import 'package:chat_app/widgets/chat_user_card.dart';
 import 'package:chat_app/widgets/message_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:overlay_support/overlay_support.dart';
-import 'package:emoji_picker_flutter/emoji_picker_flutter.dart'; // Import the emoji picker package
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/foundation.dart' as foundation;
 
 import '../api/apis.dart';
+import '../helper/my_date_util.dart';
 import '../models/chat_user_info.dart';
 import 'auth/login_screen.dart';
 
@@ -46,16 +48,14 @@ class _ChatScreenState extends State<ChatScreen> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: SafeArea(
         child: WillPopScope(
-
           onWillPop: () async {
-          if (_showEmoji) {
-            setState(() => _showEmoji = !_showEmoji);
-            return Future.value(false);
-          } else {
-            return Future.value(true);
-          }
-        },
-
+            if (_showEmoji) {
+              setState(() => _showEmoji = !_showEmoji);
+              return Future.value(false);
+            } else {
+              return Future.value(true);
+            }
+          },
           child: Scaffold(
             appBar: PreferredSize(
               preferredSize: Size.fromHeight(kToolbarHeight),
@@ -86,27 +86,29 @@ class _ChatScreenState extends State<ChatScreen> {
                           ),
                         );
                       }
-          
+
                       switch (snapshot.connectionState) {
                         // if data is loading
                         case ConnectionState.waiting:
                         case ConnectionState.none:
                           return SizedBox();
-          
+
                         // if some or all data is loaded then show it
                         case ConnectionState.active:
                         case ConnectionState.done:
                           final data = snapshot.data?.docs;
                           _list = data
-                              ?.map((e) => Message.fromJson(e.data()))
-                              .toList() ?? [];
-          
+                                  ?.map((e) => Message.fromJson(e.data()))
+                                  .toList() ??
+                              [];
+
                           if (_list.isNotEmpty) {
                             return ListView.builder(
                               reverse: true,
                               itemCount: _list.length,
                               padding: EdgeInsets.only(
-                                  top: MediaQuery.of(context).size.height * .01),
+                                  top:
+                                      MediaQuery.of(context).size.height * .01),
                               physics: const BouncingScrollPhysics(),
                               itemBuilder: (context, index) {
                                 return MessageCard(message: _list[index]);
@@ -118,7 +120,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                 'Hola, amigo! 👋',
                                 style: TextStyle(
                                     fontSize: 20,
-                                    color: Colors.white), // Set text color to white
+                                    color: Colors
+                                        .white), // Set text color to white
                               ),
                             );
                           }
@@ -137,38 +140,48 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Widget _appBar(BuildContext context) {
     return SafeArea(
-      child: Row(
-        children: [
-          IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(Icons.arrow_back,
-                color: Colors.white), // Set icon color to white
-          ),
-          CircleAvatar(
-            backgroundImage: NetworkImage(widget.user.image),
-          ),
-          SizedBox(width: 10),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
+      child: StreamBuilder(
+        stream: Apis.getUserInfo(widget.user),
+        builder: (context, snapshot) {
+          final data = snapshot.data?.docs;
+          final list = data?.map((e) => ChatUserInfo.fromJson(e.data())).toList() ?? [];
+          return Row(
             children: [
-              Text(
-                widget.user.name,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16), // Set text color to white
+              IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Icon(Icons.arrow_back, color: Colors.white),
               ),
-              Text(
-                'last seen',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 12), // Set text color to white
+              CircleAvatar(
+                backgroundImage: NetworkImage(widget.user.image),
+              ),
+              SizedBox(width: 10),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    widget.user.name,
+                    style: TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                  Text(
+                    list.isNotEmpty
+                        ? list[0].isOnline
+                            ? 'Online'
+                            : MyDateUtil.getLastActiveTime(
+                                context: context,
+                                lastActive: list[0].lastActive)
+                        : MyDateUtil.getLastActiveTime(
+                            context: context,
+                            lastActive: widget.user.lastActive),
+                    style: const TextStyle(fontSize: 13, color: Colors.white),
+                  ),
+                ],
               ),
             ],
-          ),
-        ],
+          );
+        },
       ),
     );
   }
@@ -177,7 +190,7 @@ class _ChatScreenState extends State<ChatScreen> {
 class _ChatInput extends StatefulWidget {
   final ChatUserInfo user;
 
-  _ChatInput({required this.user}); // Constructor to receive user
+  _ChatInput({required this.user});
 
   @override
   __ChatInputState createState() => __ChatInputState();
@@ -231,7 +244,7 @@ class __ChatInputState extends State<_ChatInput> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Padding(
-          padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 16.0), // Added bottom padding for spacing
+          padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 16.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -247,7 +260,8 @@ class __ChatInputState extends State<_ChatInput> {
                     //emoji button
                     IconButton(
                       onPressed: _toggleEmojiPicker,
-                      icon: const Icon(Icons.emoji_emotions, color: Colors.white, size: 25),
+                      icon: const Icon(Icons.emoji_emotions,
+                          color: Colors.white, size: 25),
                     ),
                     Expanded(
                       child: TextField(
@@ -267,29 +281,31 @@ class __ChatInputState extends State<_ChatInput> {
                       Row(
                         children: [
                           IconButton(
-                            onPressed: () {},
+                            // take image from gallery
+                            onPressed: () async {
+                              final ImagePicker picker = ImagePicker();
+                              final List<XFile> images = await picker.pickMultiImage(imageQuality: 80);
+                              for (var i in images) {
+                                log('Image Path: ${i.path}');
+                                await Apis.sendChatImage(widget.user, File(i.path));
+                              }
+                            },
                             icon: const Icon(Icons.image, color: Colors.white, size: 25),
                           ),
-
-
                           IconButton(
                             onPressed: () async {
                               final ImagePicker picker = ImagePicker();
-                            //pick a image
                               final XFile? image = await picker.pickImage(
-                        source: ImageSource.camera, imageQuality: 80);
-                    if (image != null) {
-
-                      log('Image Path: ${image.path}');
-                      await Apis.sendChatImage(widget.user ,File(image.path));
-                            }
+                                  source: ImageSource.camera, imageQuality: 80);
+                              if (image != null) {
+                                log('Image Path: ${image.path}');
+                                await Apis.sendChatImage(widget.user, File(image.path));
+                              }
                             },
-                            icon: const Icon(Icons.camera_alt_outlined, color: Colors.white, size: 25),
+                            icon: Icon(Icons.camera_alt_outlined, color: Colors.white, size: 25),
                           ),
                         ],
                       ),
-
-
 
                     MaterialButton(
                       onPressed: () {
@@ -308,39 +324,36 @@ class __ChatInputState extends State<_ChatInput> {
           ),
         ),
         Offstage(
-  offstage: !_showEmoji,
-  child: WillPopScope(
-    onWillPop: () async {
-      if (_showEmoji) {
-        setState(() => _showEmoji = false);
-        return false; // Prevent navigating back
-      } else {
-        return true; // Allow navigating back
-      }
-    },
-    child: SizedBox(
-      height: MediaQuery.of(context).size.height * 0.35,
-      child: EmojiPicker(
-        onEmojiSelected: (Category? category, Emoji emoji) {
-          _textControl.text += emoji.emoji;
-        },
-        textEditingController: _textControl,
-        config: Config(
-          emojiViewConfig: EmojiViewConfig(
-            backgroundColor: Colors.black,
-            columns: 8,
-            emojiSizeMax: 32 *
-                (foundation.defaultTargetPlatform == TargetPlatform.iOS
-                    ? 1.20
-                    : 1.0),
+          offstage: !_showEmoji,
+          child: WillPopScope(
+            onWillPop: () async {
+              if (_showEmoji) {
+                setState(() => _showEmoji = false);
+                return false; // Prevent navigating back
+              } else {
+                return true; // Allow navigating back
+              }
+            },
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height * 0.35,
+              child: EmojiPicker(
+                onEmojiSelected: (Category? category, Emoji emoji) {
+                  _textControl.text += emoji.emoji;
+                },
+                textEditingController: _textControl,
+                config: Config(
+                  emojiViewConfig: EmojiViewConfig(
+                    backgroundColor: Colors.black,
+                    columns: 8,
+                    emojiSizeMax: 32 * (foundation.defaultTargetPlatform == TargetPlatform.iOS ? 1.20 : 1.0),
+                  ),
+                ),
+              ),
+            ),
           ),
         ),
-      ),
-    ),
-  ),
-),
-
       ],
     );
   }
 }
+
