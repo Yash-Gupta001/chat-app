@@ -5,13 +5,13 @@ import 'firebase_options.dart';
 
 
 
-
 //global object for accessing device screen size
 late Size mq;
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   _initializeFirebase();
   runApp(const MyApp());
+  //FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
 }
 
 class MyApp extends StatelessWidget {

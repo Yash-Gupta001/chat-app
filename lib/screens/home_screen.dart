@@ -23,6 +23,8 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     Apis.getSelfInfo();
+    //for setting user online or offline
+    //Apis.updateActiveStatus(true);
   }
 
   @override
