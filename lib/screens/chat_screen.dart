@@ -1,3 +1,4 @@
+
 import 'dart:developer';
 import 'dart:io';
 
@@ -64,7 +65,7 @@ class _ChatScreenState extends State<ChatScreen> {
           }
         },
 
-        //
+        
         child: Scaffold(
           //app bar
           appBar: AppBar(
@@ -72,7 +73,7 @@ class _ChatScreenState extends State<ChatScreen> {
             flexibleSpace: _appBar(),
           ),
 
-          backgroundColor: const Color.fromARGB(255, 234, 248, 255),
+          backgroundColor: const Color.fromARGB(255, 0, 0, 0),
 
           //body
           body: SafeArea(
@@ -108,8 +109,10 @@ class _ChatScreenState extends State<ChatScreen> {
                                 });
                           } else {
                             return const Center(
-                              child: Text('Say Hii! 👋',
-                                  style: TextStyle(fontSize: 20)),
+                              child: Text('Hola Amigo 👋!!!',
+                                  style: TextStyle(fontSize: 20,color: Colors.white,
+                                  )
+                                  ),
                             );
                           }
                       }
@@ -170,7 +173,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     IconButton(
                         onPressed: () => Navigator.pop(context),
                         icon: const Icon(Icons.arrow_back,
-                            color: Colors.black54)),
+                            color: Colors.white)),
 
                     //user profile picture
                     ClipRRect(
@@ -247,7 +250,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         setState(() => _showEmoji = !_showEmoji);
                       },
                       icon: const Icon(Icons.emoji_emotions,
-                          color: Colors.blueAccent, size: 25)),
+                          color: Colors.black, size: 25)),
 
                   Expanded(
                       child: TextField(
@@ -259,7 +262,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     },
                     decoration: const InputDecoration(
                         hintText: 'Type Something...',
-                        hintStyle: TextStyle(color: Colors.blueAccent),
+                        hintStyle: TextStyle(color: Colors.black),
                         border: InputBorder.none),
                   )),
 
@@ -281,7 +284,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         }
                       },
                       icon: const Icon(Icons.image,
-                          color: Colors.blueAccent, size: 26)),
+                          color: Colors.black, size: 26)),
 
                   //take image from camera button
                   IconButton(
@@ -301,7 +304,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         }
                       },
                       icon: const Icon(Icons.camera_alt_rounded,
-                          color: Colors.blueAccent, size: 26)),
+                          color: Colors.black, size: 26)),
 
                   //adding some space
                   SizedBox(width: mq.width * .02),
@@ -322,7 +325,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 const EdgeInsets.only(top: 10, bottom: 10, right: 5, left: 10),
             shape: const CircleBorder(),
             color: Colors.green,
-            child: const Icon(Icons.send, color: Colors.white, size: 28),
+            child: const Icon(Icons.send, color: Colors.black, size: 28),
           )
         ],
       ),
